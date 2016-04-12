@@ -1,0 +1,19 @@
+logstashagent:
+  image: logstash
+  volumes:
+    - ./config:/config-dir
+    - /home/deploy/bestone/giant/log:/var/log/giant
+    - /home/deploy/bestone/golem/log:/var/log/golem
+  restart: always
+  mem_limit: 1000000000
+  command: "logstash -f /config-dir/giant.conf"
+  links:
+    - redis
+redis:
+  image: microbox/redis:2.8.19
+  ports:
+    - "55555:6379"
+  volumes:
+    - ./redis/data:/data
+  restart: always
+  mem_limit: 1000000000
